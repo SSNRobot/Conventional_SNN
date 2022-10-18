@@ -10,7 +10,8 @@ entity DC_Calculator is
 	
    port(--input1, input2 : in INTEGER range 0 to 10000;
 			input1, input2 : in std_logic_vector (11 downto 0);
-         DC : out std_logic_vector (7 downto 0));
+			out1, out2, out3 : out integer;
+         DC : out std_logic_vector (11 downto 0));
 		  
 end DC_Calculator;
 
@@ -23,16 +24,23 @@ architecture sequential of DC_Calculator is
 begin
  
 	A <= to_integer(unsigned(input1));
-	B <= to_integer(unsigned(input1));
+	B <= to_integer(unsigned(input2));
+	
+	out1 <= A;
+	out2 <= B;
 
 	holder <= (A + B) / 2;
 	 
 	C <= ((max - min)* holder * 100) / 4095;  --   min + at beginning
 
 	final <= C + min;
+	
+	out3 <= final;
 
-	DC <= std_logic_vector(to_unsigned(final, 8));
+	DC <= std_logic_vector(to_unsigned(final, 12));
 	
 end sequential;
 
 --DC = DC_min + (DC_max - DC_min)*((input1 + input2)/2)
+
+-- input 2000, 1500, output should be 45
