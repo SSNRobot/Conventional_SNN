@@ -1,3 +1,6 @@
+-- Equation used in this code: 
+-- DC = DC_min + (DC_max - DC_min)*(input1 + input2) / 2046
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.NUMERIC_STD.ALL;
@@ -8,10 +11,9 @@ entity DC_Calculator is
 	generic(min : INTEGER := 20;
 			  max : INTEGER := 80);
 	
-   port(--input1, input2 : in INTEGER range 0 to 10000;
-			input1, input2 : in std_logic_vector (11 downto 0);
-		--	out1, out2, out3 : out integer;
-         DC : out std_logic_vector (11 downto 0));
+   port( input1, input2 : in std_logic_vector (9 downto 0);
+			out1, out2, out3 : out integer;
+         DC : out std_logic_vector (6 downto 0));
 		  
 end DC_Calculator;
 
@@ -20,27 +22,17 @@ architecture sequential of DC_Calculator is
 
 	signal A, B, C, holder, final: INTEGER;
 
-
 begin
  
 	A <= to_integer(unsigned(input1));
 	B <= to_integer(unsigned(input2));
 	
---	out1 <= A;
---	out2 <= B;
-
-	holder <= (A + B) / 2;
+	holder <= (A + B);
 	 
-	C <= ((max - min)* holder * 100) / 4095;  --   min + at beginning
+	C <= ((max - min)* holder) / 2046;  --   min + at beginning
 
 	final <= C + min;
-	
-	--out3 <= final;
 
-	DC <= std_logic_vector(to_unsigned(final, 12));
+	DC <= std_logic_vector(to_unsigned(final, 7));
 	
 end sequential;
-
---DC = DC_min + (DC_max - DC_min)*((input1 + input2)/2)
-
--- input 2000, 1500, output should be 45
