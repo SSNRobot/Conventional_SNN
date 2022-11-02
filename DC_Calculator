@@ -1,5 +1,5 @@
 -- Equation used in this code: 
--- DC = DC_min + (DC_max - DC_min)*(input1 + input2) / 2046
+-- DC = DC_min + (DC_max - DC_min)*(input1 + input2) / 8190
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -11,8 +11,7 @@ entity DC_Calculator is
 	generic(min : INTEGER := 20;
 			  max : INTEGER := 80);
 	
-   port( input1, input2 : in std_logic_vector (9 downto 0);
-			out1, out2, out3 : out integer;
+   port( input1, input2 : in std_logic_vector (11 downto 0);
          DC : out std_logic_vector (6 downto 0));
 		  
 end DC_Calculator;
@@ -29,7 +28,7 @@ begin
 	
 	holder <= (A + B);
 	 
-	C <= ((max - min)* holder) / 2046;  --   min + at beginning
+	C <= ((max - min)* holder) / 8190;  --   min + at beginning
 
 	final <= C + min;
 
